@@ -10,18 +10,11 @@
     <style>
       :root {
         --bg: #07111f;
-        --bg-2: #0d1a2b;
         --panel: rgba(12, 24, 42, 0.72);
-        --line: rgba(125, 220, 255, 0.28);
-        --line-strong: rgba(125, 220, 255, 0.7);
+        --line: rgba(125, 220, 255, 0.16);
         --text: #e8f3ff;
         --muted: #8ea6c9;
         --active: #86f7ff;
-        --p1: #65d9ff;
-        --p2: #b982ff;
-        --p3: #8cffb7;
-        --p4: #ff8ab3;
-        --p5: #ffd66b;
         --cell: 96px;
         --gap: 26px;
       }
@@ -53,7 +46,6 @@
       }
 
       .app {
-        position: relative;
         min-height: 100vh;
         padding: 28px;
         display: grid;
@@ -71,15 +63,17 @@
       }
 
       .main { padding: 28px 32px 30px; }
-      .side { padding: 24px; align-self: stretch; }
+      .side { padding: 24px; }
 
-      .topbar {
+      .topbar,
+      .intro {
         display: flex;
         align-items: center;
         justify-content: space-between;
         gap: 20px;
-        margin-bottom: 28px;
       }
+      .topbar { margin-bottom: 28px; }
+      .intro { align-items: end; margin-bottom: 30px; }
 
       .brand { display: flex; align-items: center; gap: 14px; }
       .brand-mark {
@@ -90,12 +84,34 @@
       }
       h1 { margin: 0; font: 700 1.65rem/1 Space Grotesk, sans-serif; letter-spacing: -0.03em; }
       .sub { color: var(--muted); margin-top: 6px; font-size: 0.95rem; }
+      .eyebrow {
+        text-transform: uppercase;
+        letter-spacing: 0.18em;
+        color: #8fb4db;
+        font-size: 0.75rem;
+        margin-bottom: 10px;
+      }
+      .intro p,
+      .side p { color: #bdd0ea; line-height: 1.6; }
+      .intro p { max-width: 720px; margin: 10px 0 0; }
 
-      .nav { display: flex; gap: 10px; }
-      .pill {
-        padding: 11px 15px; border-radius: 999px;
-        border: 1px solid rgba(149, 206, 255, 0.16);
+      .nav,
+      .legend,
+      .chiprow,
+      .statusbar { display: flex; gap: 10px; flex-wrap: wrap; }
+      .legend { justify-content: end; gap: 14px; }
+      .legend span { display: inline-flex; align-items: center; gap: 8px; color: var(--muted); font-size: 0.9rem; }
+      .dot { width: 10px; height: 10px; border-radius: 50%; box-shadow: 0 0 14px currentColor; }
+
+      .pill,
+      .status,
+      .chip {
+        border-radius: 999px;
+        border: 1px solid rgba(149, 206, 255, 0.14);
         background: rgba(255,255,255,0.03);
+      }
+      .pill {
+        padding: 11px 15px;
         color: var(--muted);
         font-weight: 600;
       }
@@ -104,14 +120,6 @@
         background: linear-gradient(135deg, rgba(101,217,255,0.15), rgba(185,130,255,0.15));
         box-shadow: inset 0 0 0 1px rgba(125,220,255,0.25), 0 0 18px rgba(125,220,255,0.1);
       }
-
-      .intro {
-        display: flex; justify-content: space-between; gap: 18px; align-items: end; margin-bottom: 30px;
-      }
-      .intro p { max-width: 720px; color: #bfd3f1; margin: 10px 0 0; line-height: 1.5; }
-      .legend { display: flex; gap: 14px; flex-wrap: wrap; justify-content: end; }
-      .legend span { display: inline-flex; align-items: center; gap: 8px; color: var(--muted); font-size: 0.9rem; }
-      .dot { width: 10px; height: 10px; border-radius: 50%; box-shadow: 0 0 14px currentColor; }
 
       .map-wrap {
         position: relative;
@@ -129,21 +137,30 @@
         letter-spacing: 0.16em;
         font-size: 0.82rem;
       }
+      .axis-link,
+      .row-label {
+        appearance: none;
+        background: none;
+        border: 0;
+        padding: 0;
+        text-align: left;
+        color: #cce0ff;
+        text-transform: uppercase;
+        letter-spacing: 0.16em;
+        font-size: 0.82rem;
+        cursor: pointer;
+      }
+      .axis-link:hover,
+      .row-label:hover { color: white; text-shadow: 0 0 14px rgba(134,247,255,0.4); }
+
       .grid {
-        position: relative;
         display: grid;
         grid-template-columns: 82px repeat(5, var(--cell));
         grid-template-rows: repeat(5, var(--cell));
         gap: var(--gap);
         align-items: center;
       }
-      .row-label {
-        color: #cce0ff;
-        text-transform: uppercase;
-        letter-spacing: 0.16em;
-        font-size: 0.82rem;
-        align-self: center;
-      }
+
       .cell {
         position: relative;
         width: var(--cell);
@@ -153,9 +170,8 @@
         background: radial-gradient(circle at 30% 30%, rgba(255,255,255,0.12), rgba(255,255,255,0.02) 42%, rgba(4,10,20,0.45));
         box-shadow: inset 0 1px 0 rgba(255,255,255,0.06);
         cursor: pointer;
-        transition: transform .22s ease, border-color .22s ease, box-shadow .22s ease, background .22s ease;
+        transition: transform .2s ease, border-color .2s ease, box-shadow .2s ease, background .2s ease;
       }
-      .cell:hover { transform: translateY(-2px) scale(1.02); }
       .cell::before,
       .cell::after {
         content: "";
@@ -166,24 +182,50 @@
         pointer-events: none;
       }
       .cell::before {
-        width: 14px; height: 14px;
+        width: 14px;
+        height: 14px;
         background: rgba(210, 234, 255, 0.9);
         box-shadow: 0 0 22px rgba(160,230,255,0.45);
       }
       .cell::after {
-        width: 42px; height: 42px;
+        width: 42px;
+        height: 42px;
         border: 1px solid rgba(180, 220, 255, 0.12);
       }
-
       .cell .mini {
         position: absolute;
-        left: 12px; top: 11px;
+        left: 12px;
+        top: 11px;
         font-size: 0.74rem;
         color: #b6c9e6;
         letter-spacing: 0.08em;
       }
+      .cell:hover,
+      .cell.preview {
+        transform: translateY(-2px) scale(1.02);
+        border-color: rgba(134, 247, 255, 0.5);
+        box-shadow: 0 0 24px rgba(134,247,255,0.16), inset 0 0 14px rgba(134,247,255,0.08);
+      }
+      .cell.active {
+        border-color: rgba(134, 247, 255, 0.85);
+        background: radial-gradient(circle at center, rgba(134,247,255,0.22), rgba(185,130,255,0.12) 35%, rgba(7,17,31,0.2));
+        box-shadow: 0 0 30px rgba(134,247,255,0.25), inset 0 0 24px rgba(134,247,255,0.15);
+      }
+      .cell.active::before {
+        width: 18px;
+        height: 18px;
+        background: white;
+        box-shadow: 0 0 36px rgba(134,247,255,0.9), 0 0 80px rgba(185,130,255,0.4);
+      }
+      .cell.active::after {
+        width: 58px;
+        height: 58px;
+        border-color: rgba(134,247,255,0.6);
+        box-shadow: 0 0 24px rgba(134,247,255,0.28);
+      }
 
-      .h-line, .v-line {
+      .h-line,
+      .v-line {
         position: absolute;
         background: var(--line);
         pointer-events: none;
@@ -194,50 +236,16 @@
       .h-line { height: 2px; }
       .v-line { width: 2px; }
 
-      .cell.active {
-        border-color: rgba(134, 247, 255, 0.85);
-        background: radial-gradient(circle at center, rgba(134,247,255,0.22), rgba(185,130,255,0.12) 35%, rgba(7,17,31,0.2));
-        box-shadow: 0 0 30px rgba(134,247,255,0.25), inset 0 0 24px rgba(134,247,255,0.15);
-      }
-      .cell.active::before {
-        width: 18px; height: 18px;
-        background: white;
-        box-shadow: 0 0 36px rgba(134,247,255,0.9), 0 0 80px rgba(185,130,255,0.4);
-      }
-      .cell.active::after {
-        width: 58px; height: 58px;
-        border-color: rgba(134,247,255,0.6);
-        box-shadow: 0 0 24px rgba(134,247,255,0.28);
-      }
-
-      .cell.row-focus,
-      .cell.col-focus {
-        border-color: rgba(125, 220, 255, 0.32);
-      }
-      .cell.row-focus { box-shadow: 0 0 24px rgba(125,220,255,0.10), inset 0 0 12px rgba(255,255,255,0.03); }
-      .cell.col-focus { box-shadow: 0 0 24px rgba(185,130,255,0.12), inset 0 0 12px rgba(255,255,255,0.03); }
-
-      .statusbar {
-        display: flex; gap: 12px; flex-wrap: wrap; margin-top: 28px;
-      }
-      .status {
-        padding: 11px 14px; border-radius: 14px;
-        background: rgba(255,255,255,0.03);
-        border: 1px solid rgba(149, 206, 255, 0.12);
-        color: #b6c9e6;
-        font-size: 0.9rem;
-      }
+      .statusbar { margin-top: 28px; gap: 12px; }
+      .status,
+      .chip { padding: 9px 12px; color: #d6e7ff; font-size: 0.9rem; }
       .status strong { color: var(--text); }
 
-      .eyebrow {
-        text-transform: uppercase; letter-spacing: 0.18em; color: #8fb4db; font-size: 0.75rem; margin-bottom: 10px;
-      }
       .side h2 {
         margin: 0 0 8px;
         font: 700 1.7rem/1.05 Space Grotesk, sans-serif;
         letter-spacing: -0.03em;
       }
-      .side p { color: #bdd0ea; line-height: 1.6; }
       .card {
         margin-top: 18px;
         border: 1px solid rgba(149, 206, 255, 0.1);
@@ -245,25 +253,26 @@
         padding: 16px;
         background: rgba(255,255,255,0.03);
       }
-      .chiprow { display: flex; gap: 8px; flex-wrap: wrap; margin: 14px 0 18px; }
-      .chip {
-        padding: 8px 10px; border-radius: 999px;
-        background: rgba(255,255,255,0.04);
-        border: 1px solid rgba(149,206,255,0.11);
-        color: #d6e7ff; font-size: 0.84rem;
-      }
       ul { margin: 12px 0 0; padding-left: 18px; color: #cfe1fb; }
       li + li { margin-top: 8px; }
       .cta {
-        margin-top: 18px; display: grid; grid-template-columns: 1fr 1fr; gap: 10px;
+        margin-top: 18px;
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 10px;
       }
-      button {
-        appearance: none; border: 0; cursor: pointer;
-        padding: 13px 14px; border-radius: 16px; color: white; font-weight: 700;
-        background: linear-gradient(135deg, rgba(101,217,255,0.24), rgba(185,130,255,0.24));
+      .action {
+        appearance: none;
         border: 1px solid rgba(125,220,255,0.26);
+        cursor: pointer;
+        padding: 13px 14px;
+        border-radius: 16px;
+        color: white;
+        font-weight: 700;
+        text-align: center;
+        background: linear-gradient(135deg, rgba(101,217,255,0.24), rgba(185,130,255,0.24));
       }
-      button.secondary {
+      .action.secondary {
         background: rgba(255,255,255,0.04);
         color: #d7e8ff;
       }
@@ -282,7 +291,7 @@
             <div class="brand-mark">◎</div>
             <div>
               <h1>Mapa metodológico</h1>
-              <div class="sub">Vista inicial · estilo wow · cruce dinámico entre E y P</div>
+              <div class="sub">Vista inicial · estilo wow · foco limpio en el nodo</div>
             </div>
           </div>
           <div class="nav">
@@ -296,21 +305,19 @@
           <div>
             <div class="eyebrow">Sistema activo</div>
             <p>
-              Esta prueba lleva la home directamente al mapa: entras y ves la red completa. Al pasar por un nodo,
-              se iluminan simultáneamente su etapa y su palanca; al hacer clic, el panel lateral cambia de foco.
+              El mapa entra directo al grano: al pasar por una celda sólo se destaca el nodo, y al hacer clic se fija
+              la selección para abrir detalle y navegación hacia la etapa o la palanca en una ventana dedicada.
             </p>
           </div>
           <div class="legend">
             <span><i class="dot" style="color:var(--active)"></i> nodo activo</span>
-            <span><i class="dot" style="color:var(--p2)"></i> eje E destacado</span>
-            <span><i class="dot" style="color:var(--p1)"></i> eje P destacado</span>
+            <span><i class="dot" style="color:#b8cae9"></i> nodo en hover</span>
           </div>
         </section>
 
         <div class="map-wrap" id="mapWrap">
-          <div class="col-labels">
+          <div class="col-labels" id="colLabels">
             <div></div>
-            <div>E1</div><div>E2</div><div>E3</div><div>E4</div><div>E5</div>
           </div>
           <div class="grid" id="grid"></div>
         </div>
@@ -326,52 +333,31 @@
       <aside class="side">
         <div class="eyebrow">Nodo activo</div>
         <h2 id="title">E3 × P2</h2>
-        <p id="summary">
-          Aquí la palanca P2 cambia de intensidad dentro de la etapa E3. La idea es que el usuario sienta que está
-          leyendo el sistema, no una tabla estática.
-        </p>
+        <p id="summary">Lectura puntual del cruce seleccionado dentro del sistema.</p>
 
         <div class="chiprow">
           <div class="chip" id="chipStage">Etapa E3</div>
           <div class="chip" id="chipLever">Palanca P2</div>
-          <div class="chip">Vista inicial = mapa</div>
+          <div class="chip">Mapa como entrada</div>
         </div>
 
         <div class="card">
           <div class="eyebrow">Lectura de la intersección</div>
-          <p id="interpretation">El nodo combina foco táctico, continuidad visual y cambio de perspectiva.</p>
-          <ul id="signals">
-            <li>La columna activa representa la lectura desde la etapa.</li>
-            <li>La fila activa representa la lectura desde la palanca.</li>
-            <li>El halo central marca el punto donde ambas lógicas se encuentran.</li>
-          </ul>
+          <p id="interpretation">El nodo combina un foco claro con acceso a dos vistas monográficas.</p>
+          <ul id="signals"></ul>
         </div>
 
         <div class="cta">
-          <button>Ver E activa</button>
-          <button class="secondary">Ver P activa</button>
+          <a class="action" id="openStage" target="_blank" rel="noreferrer">Abrir etapa</a>
+          <a class="action secondary" id="openLever" target="_blank" rel="noreferrer">Abrir palanca</a>
         </div>
       </aside>
     </div>
 
     <script>
-      const copy = {
-        'P1-E1': {
-          summary: 'E1 × P1 se comporta como una entrada suave al sistema: todavía hay amplitud, poco foco y mucha promesa visual.',
-          interpretation: 'Nodo de acceso. Prioriza orientación, marco y primeras señales de lectura.'
-        },
-        'P2-E3': {
-          summary: 'Aquí la palanca P2 cambia de intensidad dentro de la etapa E3. La idea es que el usuario sienta que está leyendo el sistema, no una tabla estática.',
-          interpretation: 'Nodo de equilibrio. Combina foco táctico, continuidad visual y cambio de perspectiva.'
-        },
-        'P4-E5': {
-          summary: 'En E5 × P4 el sistema se percibe más concentrado: menos exploración y más consolidación del recorrido completo.',
-          interpretation: 'Nodo de cierre. Refuerza síntesis, decisión y lectura acumulada del modelo.'
-        }
-      };
-
       const grid = document.getElementById('grid');
       const mapWrap = document.getElementById('mapWrap');
+      const colLabels = document.getElementById('colLabels');
       const stageStatus = document.getElementById('stageStatus');
       const leverStatus = document.getElementById('leverStatus');
       const nodeStatus = document.getElementById('nodeStatus');
@@ -381,45 +367,99 @@
       const chipLever = document.getElementById('chipLever');
       const interpretation = document.getElementById('interpretation');
       const signals = document.getElementById('signals');
+      const openStage = document.getElementById('openStage');
+      const openLever = document.getElementById('openLever');
+
+      const copy = {
+        'P2-E3': {
+          summary: 'Aquí la palanca P2 gana nitidez dentro de E3. Se reduce el ruido visual y se prioriza el foco en el nodo seleccionado.',
+          interpretation: 'Cruce de equilibrio: el usuario puede leer el punto concreto y desde ahí saltar a una vista monográfica.'
+        },
+        'P1-E1': {
+          summary: 'Entrada suave al sistema: un primer punto de lectura desde el que entender el mapa y luego abrir la etapa o la palanca completa.',
+          interpretation: 'Cruce de arranque: orienta y abre navegación hacia el contexto mayor.'
+        },
+        'P4-E5': {
+          summary: 'Zona de cierre: el sistema transmite consolidación y permite revisar la etapa o la palanca ya como recorridos completos.',
+          interpretation: 'Cruce de síntesis: menos exploración libre y más lectura estructurada.'
+        }
+      };
+
+      const stageDescriptions = {
+        1: 'E1 abre el recorrido y presenta la lógica de las cinco palancas dentro del arranque.',
+        2: 'E2 organiza el sistema y empieza a marcar prioridades operativas.',
+        3: 'E3 concentra el foco y convierte el mapa en una lectura más nítida.',
+        4: 'E4 prepara consolidación, alineación y transferencia.',
+        5: 'E5 cierra el ciclo y deja una visión acumulada de todo el proceso.'
+      };
+
+      const leverDescriptions = {
+        1: 'P1 funciona como línea de orientación y puesta en marcha a través de las etapas.',
+        2: 'P2 actúa como palanca de foco y articulación en el recorrido completo.',
+        3: 'P3 aporta continuidad transversal y lectura comparativa entre etapas.',
+        4: 'P4 empuja síntesis, activación y cierre con criterio.',
+        5: 'P5 conecta el sistema con consolidación y madurez final.'
+      };
 
       const state = { row: 2, col: 3 };
+      let preview = null;
       const cells = [];
       const hLines = [];
       const vLines = [];
 
-      for (let r = 1; r <= 5; r++) {
-        const label = document.createElement('div');
-        label.className = 'row-label';
-        label.textContent = `P${r}`;
-        grid.appendChild(label);
-
+      function renderColLabels() {
         for (let c = 1; c <= 5; c++) {
-          const cell = document.createElement('button');
-          cell.className = 'cell';
-          cell.dataset.row = r;
-          cell.dataset.col = c;
-          cell.innerHTML = `<span class="mini">E${c} × P${r}</span>`;
-          cell.addEventListener('mouseenter', () => render(r, c, false));
-          cell.addEventListener('click', () => render(r, c, true));
-          grid.appendChild(cell);
-          cells.push(cell);
+          const link = document.createElement('a');
+          link.className = 'axis-link';
+          link.href = `stage.html?stage=E${c}`;
+          link.target = '_blank';
+          link.rel = 'noreferrer';
+          link.textContent = `E${c}`;
+          colLabels.appendChild(link);
         }
       }
 
-      for (let i = 0; i < 5; i++) {
-        const h = document.createElement('div');
-        h.className = 'h-line';
-        mapWrap.appendChild(h);
-        hLines.push(h);
+      function renderGrid() {
+        for (let r = 1; r <= 5; r++) {
+          const rowLink = document.createElement('a');
+          rowLink.className = 'row-label';
+          rowLink.href = `lever.html?lever=P${r}`;
+          rowLink.target = '_blank';
+          rowLink.rel = 'noreferrer';
+          rowLink.textContent = `P${r}`;
+          grid.appendChild(rowLink);
 
-        const v = document.createElement('div');
-        v.className = 'v-line';
-        mapWrap.appendChild(v);
-        vLines.push(v);
+          for (let c = 1; c <= 5; c++) {
+            const cell = document.createElement('button');
+            cell.type = 'button';
+            cell.className = 'cell';
+            cell.dataset.row = r;
+            cell.dataset.col = c;
+            cell.innerHTML = `<span class="mini">E${c} × P${r}</span>`;
+            cell.addEventListener('mouseenter', () => previewCell(r, c));
+            cell.addEventListener('mouseleave', clearPreview);
+            cell.addEventListener('click', () => selectCell(r, c));
+            grid.appendChild(cell);
+            cells.push(cell);
+          }
+        }
+      }
+
+      function renderLines() {
+        for (let i = 0; i < 5; i++) {
+          const h = document.createElement('div');
+          h.className = 'h-line';
+          mapWrap.appendChild(h);
+          hLines.push(h);
+
+          const v = document.createElement('div');
+          v.className = 'v-line';
+          mapWrap.appendChild(v);
+          vLines.push(v);
+        }
       }
 
       function placeLines() {
-        const firstCell = cells[0].getBoundingClientRect();
         const wrap = mapWrap.getBoundingClientRect();
         const xs = [];
         const ys = [];
@@ -445,67 +485,91 @@
         });
       }
 
-      function signalList(r, c) {
-        return [
-          `La columna E${c} queda resaltada para reforzar la lectura por etapa.`,
-          `La fila P${r} queda resaltada para reforzar la lectura por palanca.`,
-          `El nodo E${c} × P${r} se convierte en el foco central del sistema.`
-        ];
-      }
-
-      function render(r, c, persist = false) {
-        if (persist) {
-          state.row = r;
-          state.col = c;
-        }
-        const activeRow = persist ? state.row : r;
-        const activeCol = persist ? state.col : c;
-
-        cells.forEach(cell => {
-          const row = +cell.dataset.row;
-          const col = +cell.dataset.col;
-          cell.classList.toggle('active', row === activeRow && col === activeCol);
-          cell.classList.toggle('row-focus', row === activeRow && col !== activeCol);
-          cell.classList.toggle('col-focus', col === activeCol && row !== activeRow);
-        });
-
+      function updateLines(activeRow, activeCol) {
         hLines.forEach((line, idx) => {
           const on = idx + 1 === activeRow;
-          line.style.background = on ? 'linear-gradient(90deg, rgba(101,217,255,0.2), rgba(134,247,255,0.95), rgba(185,130,255,0.3))' : 'rgba(125, 220, 255, 0.16)';
+          line.style.background = on
+            ? 'linear-gradient(90deg, rgba(101,217,255,0.22), rgba(134,247,255,0.78), rgba(185,130,255,0.18))'
+            : 'rgba(125, 220, 255, 0.16)';
           line.style.height = on ? '4px' : '2px';
           line.style.opacity = on ? '1' : '.45';
         });
 
         vLines.forEach((line, idx) => {
           const on = idx + 1 === activeCol;
-          line.style.background = on ? 'linear-gradient(180deg, rgba(185,130,255,0.2), rgba(134,247,255,0.95), rgba(101,217,255,0.2))' : 'rgba(125, 220, 255, 0.16)';
+          line.style.background = on
+            ? 'linear-gradient(180deg, rgba(185,130,255,0.18), rgba(134,247,255,0.78), rgba(101,217,255,0.22))'
+            : 'rgba(125, 220, 255, 0.16)';
           line.style.width = on ? '4px' : '2px';
           line.style.opacity = on ? '1' : '.45';
         });
+      }
 
-        const key = `P${activeRow}-E${activeCol}`;
+      function signalList(row, col) {
+        return [
+          `Desde aquí puedes abrir la vista completa de E${col} en una ventana nueva.`,
+          `También puedes abrir la vista completa de P${row} en una ventana nueva.`,
+          `La intersección E${col} × P${row} sigue siendo el punto de entrada al detalle puntual.`
+        ];
+      }
+
+      function updatePanel(row, col) {
+        const key = `P${row}-E${col}`;
         const data = copy[key] || {
-          summary: `Prueba visual para ${key}. Aquí puedes sustituir el contenido por la definición real de ese cruce dentro del esquema metodológico.`,
-          interpretation: `Intersección ${key}: mezcla lectura por etapa, lectura por palanca y foco visual sobre el nodo seleccionado.`
+          summary: `Prueba visual para ${key}. Este cruce queda definido como punto puntual de lectura dentro del mapa interactivo.`,
+          interpretation: `Intersección ${key}: detalle local con salida directa a etapa y palanca en vistas independientes.`
         };
 
-        stageStatus.textContent = `E${activeCol}`;
-        leverStatus.textContent = `P${activeRow}`;
-        nodeStatus.textContent = `E${activeCol} × P${activeRow}`;
-        title.textContent = `E${activeCol} × P${activeRow}`;
+        stageStatus.textContent = `E${col}`;
+        leverStatus.textContent = `P${row}`;
+        nodeStatus.textContent = `E${col} × P${row}`;
+        title.textContent = `E${col} × P${row}`;
         summary.textContent = data.summary;
-        chipStage.textContent = `Etapa E${activeCol}`;
-        chipLever.textContent = `Palanca P${activeRow}`;
+        chipStage.textContent = `Etapa E${col}`;
+        chipLever.textContent = `Palanca P${row}`;
         interpretation.textContent = data.interpretation;
-        signals.innerHTML = signalList(activeRow, activeCol).map(item => `<li>${item}</li>`).join('');
+        signals.innerHTML = signalList(row, col).map(item => `<li>${item}</li>`).join('');
+        openStage.href = `stage.html?stage=E${col}`;
+        openStage.title = stageDescriptions[col];
+        openLever.href = `lever.html?lever=P${row}`;
+        openLever.title = leverDescriptions[row];
+      }
+
+      function selectCell(row, col) {
+        state.row = row;
+        state.col = col;
+        cells.forEach(cell => {
+          const isActive = +cell.dataset.row === row && +cell.dataset.col === col;
+          cell.classList.toggle('active', isActive);
+          cell.classList.remove('preview');
+        });
+        preview = null;
+        updateLines(row, col);
+        updatePanel(row, col);
+      }
+
+      function previewCell(row, col) {
+        preview = { row, col };
+        cells.forEach(cell => {
+          const isPreview = +cell.dataset.row === row && +cell.dataset.col === col;
+          const isActive = +cell.dataset.row === state.row && +cell.dataset.col === state.col;
+          cell.classList.toggle('preview', isPreview && !isActive);
+        });
+      }
+
+      function clearPreview() {
+        preview = null;
+        cells.forEach(cell => cell.classList.remove('preview'));
       }
 
       window.addEventListener('resize', placeLines);
       window.addEventListener('load', () => {
+        renderColLabels();
+        renderGrid();
+        renderLines();
         placeLines();
-        render(state.row, state.col, true);
+        selectCell(state.row, state.col);
       });
-      grid.addEventListener('mouseleave', () => render(state.row, state.col, true));
     </script>
   </body>
 </html>
