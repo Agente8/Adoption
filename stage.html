@@ -53,7 +53,7 @@
       const params = new URLSearchParams(window.location.search);
       const stageId = Number(params.get('stage') || '1');
       const stages = ['Alinear', 'Explorar', 'Capacitar', 'Expandir', 'Evolucionar'];
-      const levers = ['Comunicación', 'Capacitación', 'Soporte', 'Gobernanza', 'Incentivos'];
+      const levers = ['Comunicación', 'Formación', 'Soporte', 'Gobernanza', 'Incentivos'];
       const stage = stages[stageId - 1] || stages[0];
       const num = stageId;
       const texts = {

@@ -52,13 +52,13 @@
     <script>
       const params = new URLSearchParams(window.location.search);
       const leverId = Number(params.get('lever') || '1');
-      const levers = ['Comunicación', 'Capacitación', 'Soporte', 'Gobernanza', 'Incentivos'];
+      const levers = ['Comunicación', 'Formación', 'Soporte', 'Gobernanza', 'Incentivos'];
       const stages = ['Alinear', 'Explorar', 'Capacitar', 'Expandir', 'Evolucionar'];
       const lever = levers[leverId - 1] || levers[0];
       const num = leverId;
       const texts = {
         1: 'Comunicación introduce la lógica del sistema y se adapta a cada etapa como estructura de arranque.',
-        2: 'Capacitación organiza foco y claridad a través del proceso completo.',
+        2: 'Formación organiza foco y claridad a través del proceso completo.',
         3: 'Soporte conecta etapas y ayuda a comparar transiciones y continuidades.',
         4: 'Gobernanza impulsa activación, síntesis y consolidación progresiva.',
         5: 'Incentivos acompaña la madurez del recorrido y su lectura final.'

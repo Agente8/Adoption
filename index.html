@@ -260,20 +260,6 @@
           </div>
         </div>
 
-        <section class="intro">
-          <div>
-            <div class="eyebrow">Mapa del modelo</div>
-            <p>
-              Explora las cinco etapas y las cinco palancas como un sistema vivo. El mapa sirve para orientarte rápido,
-              fijar un nodo y desde ahí profundizar en la etapa, la palanca o la lógica de ayuda que explica el cambio
-              de mindset necesario para operar con IA generativa.
-            </p>
-          </div>
-          <div class="legend">
-            <span><i class="dot" style="color:var(--active)"></i> nodo activo</span>
-            <span><i class="dot" style="color:#b8cae9"></i> nodo en hover</span>
-          </div>
-        </section>
 
         <div class="map-wrap">
           <div class="col-labels" id="colLabels"><div></div></div>
@@ -283,19 +269,19 @@
         <div class="statusbar">
           <div class="status">Modo: <strong>Mapa</strong></div>
           <div class="status">Etapa activa: <strong id="stageStatus">Capacitar</strong></div>
-          <div class="status">Palanca activa: <strong id="leverStatus">Capacitación</strong></div>
-          <div class="status">Intersección: <strong id="nodeStatus">Capacitar × Capacitación</strong></div>
+          <div class="status">Palanca activa: <strong id="leverStatus">Formación</strong></div>
+          <div class="status">Intersección: <strong id="nodeStatus">Capacitar × Formación</strong></div>
         </div>
       </main>
 
       <aside class="side">
         <div class="eyebrow">Nodo activo</div>
-        <h2 id="title">Capacitar × Capacitación</h2>
+        <h2 id="title">Capacitar × Formación</h2>
         <p id="summary">Lectura puntual del cruce seleccionado dentro del sistema.</p>
 
         <div class="chiprow">
           <div class="chip" id="chipStage">Etapa Capacitar</div>
-          <div class="chip" id="chipLever">Palanca Capacitación</div>
+          <div class="chip" id="chipLever">Palanca Formación</div>
           <div class="chip">Mindset IA</div>
         </div>
 
@@ -337,7 +323,7 @@
 
       const levers = [
         { code: 'P1', name: 'Comunicación' },
-        { code: 'P2', name: 'Capacitación' },
+        { code: 'P2', name: 'Formación' },
         { code: 'P3', name: 'Soporte' },
         { code: 'P4', name: 'Gobernanza' },
         { code: 'P5', name: 'Incentivos' }
@@ -345,7 +331,7 @@
 
       const copy = {
         '2-3': {
-          summary: 'Aquí la palanca Capacitación gana nitidez dentro de la etapa Capacitar. Se reduce el ruido visual y se prioriza el foco en el nodo seleccionado.',
+          summary: 'Aquí la palanca Formación gana nitidez dentro de la etapa Capacitar. Se reduce el ruido visual y se prioriza el foco en el nodo seleccionado.',
           interpretation: 'Cruce de equilibrio: el usuario puede leer el punto concreto y desde ahí saltar a una vista monográfica.'
         },
         '1-1': {
