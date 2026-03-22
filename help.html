@@ -1,0 +1,111 @@
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Ayuda · Adopción del Mindset IA</title>
+    <style>
+      :root { --bg: #07111f; --panel: rgba(12,24,42,.82); --text: #e8f3ff; --muted: #9ab2d1; --line: rgba(149,206,255,.12); }
+      * { box-sizing: border-box; }
+      body {
+        margin: 0; font-family: Inter, system-ui, sans-serif; color: var(--text);
+        background:
+          radial-gradient(circle at top center, rgba(101,217,255,.14), transparent 30%),
+          radial-gradient(circle at 80% 0%, rgba(185,130,255,.12), transparent 24%),
+          linear-gradient(135deg, #07111f, #0a1627 55%, #071423);
+        min-height: 100vh;
+      }
+      .page { max-width: 1280px; margin: 0 auto; padding: 32px; }
+      .topnav, .hero, .section { background: var(--panel); border: 1px solid var(--line); border-radius: 28px; backdrop-filter: blur(18px); box-shadow: 0 20px 80px rgba(0,0,0,.35); }
+      .topnav { padding: 14px 18px; display: flex; gap: 10px; flex-wrap: wrap; margin-bottom: 20px; }
+      .navlink { color: var(--muted); text-decoration: none; padding: 10px 14px; border-radius: 999px; border: 1px solid var(--line); background: rgba(255,255,255,.03); }
+      .navlink.active { color: var(--text); background: linear-gradient(135deg, rgba(101,217,255,.15), rgba(185,130,255,.15)); }
+      .hero, .section { padding: 28px; }
+      .hero { margin-bottom: 20px; }
+      .eyebrow { text-transform: uppercase; letter-spacing: .18em; color: #8fb4db; font-size: .75rem; }
+      h1 { margin: 10px 0 12px; font: 700 2.8rem/1.05 Space Grotesk, Inter, sans-serif; }
+      h2 { margin: 0 0 12px; font: 700 1.5rem/1.2 Space Grotesk, Inter, sans-serif; }
+      p { color: var(--muted); line-height: 1.7; }
+      .quote {
+        margin-top: 20px; padding: 22px; border-radius: 24px;
+        background: linear-gradient(135deg, rgba(101,217,255,.08), rgba(185,130,255,.08));
+        border: 1px solid rgba(149,206,255,.14);
+      }
+      .quote strong { display: block; margin-bottom: 10px; color: var(--text); }
+      .table-wrap { overflow: auto; border-radius: 20px; border: 1px solid var(--line); margin-top: 18px; }
+      table { width: 100%; border-collapse: collapse; min-width: 980px; }
+      th, td { padding: 18px; vertical-align: top; text-align: left; border-bottom: 1px solid var(--line); }
+      th { background: rgba(255,255,255,.04); color: var(--text); font-weight: 700; }
+      td { color: var(--muted); line-height: 1.65; }
+      tbody tr:nth-child(odd) td { background: rgba(255,255,255,.02); }
+      @media (max-width: 900px) { h1 { font-size: 2.1rem; } .page { padding: 20px; } }
+    </style>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Space+Grotesk:wght@500;700&display=swap" rel="stylesheet">
+  </head>
+  <body>
+    <div class="page">
+      <nav class="topnav">
+        <a class="navlink" href="index.html">Mapa</a>
+        <a class="navlink" href="stage.html?stage=E1">Etapa</a>
+        <a class="navlink" href="lever.html?lever=P1">Palanca</a>
+        <a class="navlink active" href="help.html">Ayuda</a>
+      </nav>
+
+      <section class="hero">
+        <div class="eyebrow">Ayuda</div>
+        <h1>Adopción del Mindset IA</h1>
+        <p>Esta página da contexto al cambio que propone el modelo: no gestionar la transformación como una obra finita y cerrada, sino como un sistema que se cultiva, aprende y se reitera continuamente.</p>
+        <div class="quote">
+          <strong>Cambio de metáfora</strong>
+          <p>Dejar de ser un arquitecto que diseña y construye un edificio (cambio) y pasar a ser un jardinero que cultiva un ecosistema.</p>
+        </div>
+      </section>
+
+      <section class="section">
+        <div class="eyebrow">Comparativa</div>
+        <h2>Arquitecto vs. jardinero</h2>
+        <p>La diferencia no está sólo en el ritmo del cambio, sino en la lógica completa de cómo se alinea, se prueba, se habilita, se escala y se sostiene una organización que adopta IA generativa.</p>
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr>
+                <th>Etapa</th>
+                <th>Visión de Arquitecto (Cambio Tradicional y Discreto)</th>
+                <th>Visión de Jardinero (Cambio para IA Generativa y Continuo)</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><strong>Align (Alinear)</strong></td>
+                <td>Se alinea un proyecto con un fin definido (ej: implementar una herramienta específica). El foco es estático.</td>
+                <td>Se asume el Objetivo Macro y constante: cambiar el “mindset” y los hábitos ante un nuevo paradigma. Dentro de cada ciclo, la alineación es táctica y focalizada (Micro): elegir el problema o capacidad a explorar en los próximos meses.</td>
+              </tr>
+              <tr>
+                <td><strong>Prove (Probar)</strong></td>
+                <td>Se ejecuta un piloto para validar una hipótesis y demostrar el ROI. El objetivo es confirmar una solución.</td>
+                <td>Se gestiona un portafolio de experimentos rápidos. El objetivo es maximizar el aprendizaje, incluso a través de “fracasos”.</td>
+              </tr>
+              <tr>
+                <td><strong>Enable (Habilitar)</strong></td>
+                <td>Es un evento de “go-live” técnico. Se enciende el interruptor cuando el sistema está listo para ser usado en producción.</td>
+                <td>Es la creación continua de un “sandbox seguro”. Habilita la exploración con “guardrails” técnicos, de gobernanza y psicológicos.</td>
+              </tr>
+              <tr>
+                <td><strong>Scale (Escalar)</strong></td>
+                <td>Es un despliegue centralizado y de arriba-abajo (“roll-out”). Se impone una solución probada al resto de la organización.</td>
+                <td>Es una “polinización” viral y orgánica. Se facilita que los casos de éxito de un equipo inspiren y sean adaptados por otros.</td>
+              </tr>
+              <tr>
+                <td><strong>Sustain (Sostener)</strong></td>
+                <td>Es una fase final de mantenimiento y optimización. Se busca asegurar que se mantenga el nuevo estado y no haya regresiones.</td>
+                <td>No es un estado final. La optimización se convierte en el disparador inmediato de un nuevo ciclo de Align. Es el principio, no el fin.</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+    </div>
+  </body>
+</html>
