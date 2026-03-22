@@ -1,0 +1,80 @@
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Vista de etapa · Adopción del Mindset IA</title>
+    <style>
+      :root { --bg: #07111f; --panel: rgba(12,24,42,.82); --text: #e8f3ff; --muted: #9ab2d1; }
+      * { box-sizing: border-box; }
+      body {
+        margin: 0; font-family: Inter, system-ui, sans-serif; color: var(--text);
+        background: radial-gradient(circle at top left, rgba(101,217,255,.12), transparent 28%), linear-gradient(135deg, #07111f, #0a1627 55%, #071423);
+        min-height: 100vh;
+      }
+      .page { max-width: 1180px; margin: 0 auto; padding: 32px; }
+      .topnav, .hero, .card { background: var(--panel); border: 1px solid rgba(149,206,255,.14); border-radius: 28px; backdrop-filter: blur(18px); box-shadow: 0 20px 80px rgba(0,0,0,.35); }
+      .topnav { padding: 14px 18px; display: flex; gap: 10px; flex-wrap: wrap; margin-bottom: 20px; }
+      .navlink { color: var(--muted); text-decoration: none; padding: 10px 14px; border-radius: 999px; border: 1px solid rgba(149,206,255,.12); background: rgba(255,255,255,.03); }
+      .navlink.active { color: var(--text); background: linear-gradient(135deg, rgba(101,217,255,.15), rgba(185,130,255,.15)); }
+      .hero { padding: 32px; }
+      .eyebrow { text-transform: uppercase; letter-spacing: .18em; color: #8fb4db; font-size: .75rem; }
+      h1 { margin: 10px 0 8px; font-size: 3rem; }
+      p { color: var(--muted); line-height: 1.6; }
+      .rail { display: grid; grid-template-columns: repeat(5, 1fr); gap: 16px; margin-top: 28px; }
+      .card { padding: 20px; }
+      .card strong { display: block; font-size: 1.05rem; margin-bottom: 8px; }
+      .meta { margin-top: 28px; display: flex; gap: 10px; flex-wrap: wrap; }
+      .chip { padding: 10px 12px; border-radius: 999px; background: rgba(255,255,255,.04); border: 1px solid rgba(149,206,255,.12); }
+      @media (max-width: 900px) { .rail { grid-template-columns: 1fr; } h1 { font-size: 2.2rem; } }
+    </style>
+  </head>
+  <body>
+    <div class="page">
+      <nav class="topnav">
+        <a class="navlink" href="index.html">Mapa</a>
+        <a class="navlink active" id="selfLink" href="stage.html?stage=1">Etapas</a>
+        <a class="navlink" id="leverLink" href="lever.html?lever=1">Palancas</a>
+        <a class="navlink" href="help.html">Ayuda</a>
+      </nav>
+      <section class="hero">
+        <div class="eyebrow">Adopción del Mindset IA</div>
+        <h1 id="title">Alinear</h1>
+        <p id="summary"></p>
+        <div class="meta">
+          <div class="chip">Misma ventana</div>
+          <div class="chip">Lectura completa de etapa</div>
+          <div class="chip" id="chip"></div>
+        </div>
+      </section>
+      <section class="rail" id="rail"></section>
+    </div>
+    <script>
+      const params = new URLSearchParams(window.location.search);
+      const stageId = Number(params.get('stage') || '1');
+      const stages = ['Alinear', 'Explorar', 'Capacitar', 'Expandir', 'Evolucionar'];
+      const levers = ['Comunicación', 'Capacitación', 'Soporte', 'Gobernanza', 'Incentivos'];
+      const stage = stages[stageId - 1] || stages[0];
+      const num = stageId;
+      const texts = {
+        1: 'Alinear abre el proceso. Aquí las cinco palancas se leen como activadores iniciales y marcos de entrada.',
+        2: 'Explorar ordena el sistema. La etapa concentra organización, foco y primeras decisiones de despliegue.',
+        3: 'Capacitar es el núcleo del recorrido. Las cinco palancas se tensan aquí con más claridad y contraste.',
+        4: 'Expandir prepara consolidación. La etapa traduce las palancas en alineación, transferencia y ajuste.',
+        5: 'Evolucionar cierra el ciclo. Cada palanca se revisa desde síntesis, madurez y proyección final.'
+      };
+      document.getElementById('title').textContent = stage;
+      document.getElementById('summary').textContent = texts[num];
+      document.getElementById('chip').textContent = `Etapa ${num} de 5`;
+      document.getElementById('selfLink').href = `stage.html?stage=${num}`;
+      document.getElementById('leverLink').href = `lever.html?lever=${num}`;
+      const rail = document.getElementById('rail');
+      for (let p = 1; p <= 5; p++) {
+        const card = document.createElement('article');
+        card.className = 'card';
+        card.innerHTML = `<strong>${levers[p - 1]} en ${stage}</strong><p>Esta tarjeta representa cómo la palanca ${levers[p - 1]} se expresa dentro de ${stage}. Aquí luego irá contenido real del cruce.</p>`;
+        rail.appendChild(card);
+      }
+    </script>
+  </body>
+</html>
