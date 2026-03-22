@@ -3,7 +3,7 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Mapa metodológico wow</title>
+    <title>Adopción del Mindset IA</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Space+Grotesk:wght@500;700&display=swap" rel="stylesheet">
@@ -17,7 +17,6 @@
         --cell: 96px;
         --gap: 26px;
       }
-
       * { box-sizing: border-box; }
       body {
         margin: 0;
@@ -31,7 +30,6 @@
           linear-gradient(135deg, var(--bg), #040915 55%, #071423);
         overflow: hidden;
       }
-
       body::before {
         content: "";
         position: fixed;
@@ -43,7 +41,6 @@
         pointer-events: none;
         mask-image: radial-gradient(circle at center, black 45%, transparent 95%);
       }
-
       .app {
         min-height: 100vh;
         padding: 28px;
@@ -51,21 +48,16 @@
         grid-template-columns: 1fr 360px;
         gap: 28px;
       }
-
-      .main,
-      .side {
+      .main, .side {
         background: var(--panel);
         border: 1px solid rgba(149, 206, 255, 0.15);
         box-shadow: 0 20px 80px rgba(0, 0, 0, 0.35), inset 0 1px 0 rgba(255,255,255,0.04);
         backdrop-filter: blur(18px);
         border-radius: 28px;
       }
-
       .main { padding: 28px 32px 30px; }
       .side { padding: 24px; }
-
-      .topbar,
-      .intro {
+      .topbar, .intro {
         display: flex;
         align-items: center;
         justify-content: space-between;
@@ -73,7 +65,6 @@
       }
       .topbar { margin-bottom: 28px; }
       .intro { align-items: end; margin-bottom: 30px; }
-
       .brand { display: flex; align-items: center; gap: 14px; }
       .brand-mark {
         width: 42px; height: 42px; border-radius: 14px;
@@ -81,8 +72,8 @@
         box-shadow: 0 0 28px rgba(101,217,255,0.35);
         display: grid; place-items: center; font-weight: 700;
       }
-      h1 { margin: 0; font: 700 1.65rem/1 Space Grotesk, sans-serif; letter-spacing: -0.03em; }
-      .sub { color: var(--muted); margin-top: 6px; font-size: 0.95rem; }
+      h1 { margin: 0; font: 700 1.8rem/1 Space Grotesk, sans-serif; letter-spacing: -0.03em; }
+      .sub { color: var(--muted); margin-top: 6px; font-size: 0.98rem; max-width: 720px; }
       .eyebrow {
         text-transform: uppercase;
         letter-spacing: 0.18em;
@@ -90,21 +81,13 @@
         font-size: 0.75rem;
         margin-bottom: 10px;
       }
-      .intro p,
-      .side p { color: #bdd0ea; line-height: 1.6; }
-      .intro p { max-width: 720px; margin: 10px 0 0; }
-
-      .nav,
-      .legend,
-      .chiprow,
-      .statusbar { display: flex; gap: 10px; flex-wrap: wrap; }
+      .intro p, .side p { color: #bdd0ea; line-height: 1.6; }
+      .intro p { max-width: 760px; margin: 10px 0 0; }
+      .nav, .legend, .chiprow, .statusbar { display: flex; gap: 10px; flex-wrap: wrap; }
       .legend { justify-content: end; gap: 14px; }
       .legend span { display: inline-flex; align-items: center; gap: 8px; color: var(--muted); font-size: 0.9rem; }
       .dot { width: 10px; height: 10px; border-radius: 50%; box-shadow: 0 0 14px currentColor; }
-
-      .pill,
-      .status,
-      .chip {
+      .pill, .status, .chip {
         border-radius: 999px;
         border: 1px solid rgba(149, 206, 255, 0.14);
         background: rgba(255,255,255,0.03);
@@ -120,11 +103,7 @@
         background: linear-gradient(135deg, rgba(101,217,255,0.15), rgba(185,130,255,0.15));
         box-shadow: inset 0 0 0 1px rgba(125,220,255,0.25), 0 0 18px rgba(125,220,255,0.1);
       }
-
-      .map-wrap {
-        margin-top: 18px;
-        padding: 24px 18px 12px 18px;
-      }
+      .map-wrap { margin-top: 18px; padding: 24px 18px 12px 18px; }
       .col-labels {
         display: grid;
         grid-template-columns: 82px repeat(5, var(--cell));
@@ -136,8 +115,7 @@
         letter-spacing: 0.16em;
         font-size: 0.82rem;
       }
-      .axis-link,
-      .row-label {
+      .axis-link, .row-label {
         appearance: none;
         background: none;
         border: 0;
@@ -150,9 +128,7 @@
         cursor: pointer;
         text-decoration: none;
       }
-      .axis-link:hover,
-      .row-label:hover { color: white; text-shadow: 0 0 14px rgba(134,247,255,0.4); }
-
+      .axis-link:hover, .row-label:hover { color: white; text-shadow: 0 0 14px rgba(134,247,255,0.4); }
       .grid {
         display: grid;
         grid-template-columns: 82px repeat(5, var(--cell));
@@ -160,7 +136,6 @@
         gap: var(--gap);
         align-items: center;
       }
-
       .cell {
         position: relative;
         width: var(--cell);
@@ -172,8 +147,7 @@
         cursor: pointer;
         transition: transform .2s ease, border-color .2s ease, box-shadow .2s ease, background .2s ease;
       }
-      .cell::before,
-      .cell::after {
+      .cell::before, .cell::after {
         content: "";
         position: absolute;
         inset: 50%;
@@ -200,8 +174,7 @@
         color: #b6c9e6;
         letter-spacing: 0.08em;
       }
-      .cell:hover,
-      .cell.preview {
+      .cell:hover, .cell.preview {
         transform: translateY(-2px) scale(1.02);
         border-color: rgba(134, 247, 255, 0.5);
         box-shadow: 0 0 24px rgba(134,247,255,0.16), inset 0 0 14px rgba(134,247,255,0.08);
@@ -223,12 +196,9 @@
         border-color: rgba(134,247,255,0.6);
         box-shadow: 0 0 24px rgba(134,247,255,0.28);
       }
-
       .statusbar { margin-top: 28px; gap: 12px; }
-      .status,
-      .chip { padding: 9px 12px; color: #d6e7ff; font-size: 0.9rem; }
+      .status, .chip { padding: 9px 12px; color: #d6e7ff; font-size: 0.9rem; }
       .status strong { color: var(--text); }
-
       .side h2 {
         margin: 0 0 8px;
         font: 700 1.7rem/1.05 Space Grotesk, sans-serif;
@@ -265,7 +235,6 @@
         background: rgba(255,255,255,0.04);
         color: #d7e8ff;
       }
-
       @media (max-width: 1100px) {
         body { overflow: auto; }
         .app { grid-template-columns: 1fr; }
@@ -279,23 +248,25 @@
           <div class="brand">
             <div class="brand-mark">◎</div>
             <div>
-              <h1>Mapa metodológico</h1>
-              <div class="sub">Vista inicial · estilo wow · foco limpio en el nodo</div>
+              <h1>Adopción del Mindset IA</h1>
+              <div class="sub">La estrella Polar es convertirse en una organización que piensa y opera de forma nativa con la IA.</div>
             </div>
           </div>
           <div class="nav">
             <a class="pill active" href="index.html">Mapa</a>
             <a class="pill" href="stage.html?stage=E1">Etapa</a>
             <a class="pill" href="lever.html?lever=P1">Palanca</a>
+            <a class="pill" href="help.html">Ayuda</a>
           </div>
         </div>
 
         <section class="intro">
           <div>
-            <div class="eyebrow">Sistema activo</div>
+            <div class="eyebrow">Mapa del modelo</div>
             <p>
-              El mapa entra directo al grano: al pasar por una celda sólo se destaca el nodo. Al hacer clic se fija
-              la selección y desde el panel puedes navegar a la vista de etapa o de palanca en esta misma ventana.
+              Explora las cinco etapas y las cinco palancas como un sistema vivo. El mapa sirve para orientarte rápido,
+              fijar un nodo y desde ahí profundizar en la etapa, la palanca o la lógica de ayuda que explica el cambio
+              de mindset necesario para operar con IA generativa.
             </p>
           </div>
           <div class="legend">
@@ -305,9 +276,7 @@
         </section>
 
         <div class="map-wrap">
-          <div class="col-labels" id="colLabels">
-            <div></div>
-          </div>
+          <div class="col-labels" id="colLabels"><div></div></div>
           <div class="grid" id="grid"></div>
         </div>
 
@@ -327,7 +296,7 @@
         <div class="chiprow">
           <div class="chip" id="chipStage">Etapa E3</div>
           <div class="chip" id="chipLever">Palanca P2</div>
-          <div class="chip">Mapa como entrada</div>
+          <div class="chip">Mindset IA</div>
         </div>
 
         <div class="card">
@@ -414,7 +383,7 @@
         return [
           `Desde aquí puedes ir a la vista completa de E${col} sin salir de la misma ventana.`,
           `También puedes ir a la vista completa de P${row} y volver luego al mapa desde el menú.`,
-          `La intersección E${col} × P${row} sigue siendo el punto de entrada al detalle puntual.`
+          `En Ayuda encontrarás la narrativa de arquitecto vs. jardinero para entender el cambio de mindset.`
         ];
       }
 
@@ -424,7 +393,6 @@
           summary: `Prueba visual para ${key}. Este cruce queda definido como punto puntual de lectura dentro del mapa interactivo.`,
           interpretation: `Intersección ${key}: detalle local con salida directa a etapa y palanca en vistas independientes.`
         };
-
         stageStatus.textContent = `E${col}`;
         leverStatus.textContent = `P${row}`;
         nodeStatus.textContent = `E${col} × P${row}`;

@@ -3,51 +3,20 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Vista de etapa</title>
+    <title>Vista de etapa · Adopción del Mindset IA</title>
     <style>
-      :root {
-        --bg: #07111f;
-        --panel: rgba(12, 24, 42, 0.82);
-        --text: #e8f3ff;
-        --muted: #9ab2d1;
-      }
+      :root { --bg: #07111f; --panel: rgba(12,24,42,.82); --text: #e8f3ff; --muted: #9ab2d1; }
       * { box-sizing: border-box; }
       body {
-        margin: 0;
-        font-family: Inter, system-ui, sans-serif;
-        color: var(--text);
-        background:
-          radial-gradient(circle at top left, rgba(101,217,255,.12), transparent 28%),
-          linear-gradient(135deg, #07111f, #0a1627 55%, #071423);
+        margin: 0; font-family: Inter, system-ui, sans-serif; color: var(--text);
+        background: radial-gradient(circle at top left, rgba(101,217,255,.12), transparent 28%), linear-gradient(135deg, #07111f, #0a1627 55%, #071423);
         min-height: 100vh;
       }
       .page { max-width: 1180px; margin: 0 auto; padding: 32px; }
-      .topnav, .hero, .card {
-        background: var(--panel);
-        border: 1px solid rgba(149, 206, 255, 0.14);
-        border-radius: 28px;
-        backdrop-filter: blur(18px);
-        box-shadow: 0 20px 80px rgba(0, 0, 0, 0.35);
-      }
-      .topnav {
-        padding: 14px 18px;
-        display: flex;
-        gap: 10px;
-        flex-wrap: wrap;
-        margin-bottom: 20px;
-      }
-      .navlink {
-        color: var(--muted);
-        text-decoration: none;
-        padding: 10px 14px;
-        border-radius: 999px;
-        border: 1px solid rgba(149,206,255,.12);
-        background: rgba(255,255,255,.03);
-      }
-      .navlink.active {
-        color: var(--text);
-        background: linear-gradient(135deg, rgba(101,217,255,.15), rgba(185,130,255,.15));
-      }
+      .topnav, .hero, .card { background: var(--panel); border: 1px solid rgba(149,206,255,.14); border-radius: 28px; backdrop-filter: blur(18px); box-shadow: 0 20px 80px rgba(0,0,0,.35); }
+      .topnav { padding: 14px 18px; display: flex; gap: 10px; flex-wrap: wrap; margin-bottom: 20px; }
+      .navlink { color: var(--muted); text-decoration: none; padding: 10px 14px; border-radius: 999px; border: 1px solid rgba(149,206,255,.12); background: rgba(255,255,255,.03); }
+      .navlink.active { color: var(--text); background: linear-gradient(135deg, rgba(101,217,255,.15), rgba(185,130,255,.15)); }
       .hero { padding: 32px; }
       .eyebrow { text-transform: uppercase; letter-spacing: .18em; color: #8fb4db; font-size: .75rem; }
       h1 { margin: 10px 0 8px; font-size: 3rem; }
@@ -66,9 +35,10 @@
         <a class="navlink" href="index.html">Mapa</a>
         <a class="navlink active" id="selfLink" href="stage.html?stage=E1">Etapa</a>
         <a class="navlink" id="leverLink" href="lever.html?lever=P1">Palanca</a>
+        <a class="navlink" href="help.html">Ayuda</a>
       </nav>
       <section class="hero">
-        <div class="eyebrow">Vista dedicada</div>
+        <div class="eyebrow">Adopción del Mindset IA</div>
         <h1 id="title">Etapa E1</h1>
         <p id="summary"></p>
         <div class="meta">
