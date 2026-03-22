@@ -11,7 +11,6 @@
       :root {
         --bg: #07111f;
         --panel: rgba(12, 24, 42, 0.72);
-        --line: rgba(125, 220, 255, 0.16);
         --text: #e8f3ff;
         --muted: #8ea6c9;
         --active: #86f7ff;
@@ -114,6 +113,7 @@
         padding: 11px 15px;
         color: var(--muted);
         font-weight: 600;
+        text-decoration: none;
       }
       .pill.active {
         color: var(--text);
@@ -122,7 +122,6 @@
       }
 
       .map-wrap {
-        position: relative;
         margin-top: 18px;
         padding: 24px 18px 12px 18px;
       }
@@ -149,6 +148,7 @@
         letter-spacing: 0.16em;
         font-size: 0.82rem;
         cursor: pointer;
+        text-decoration: none;
       }
       .axis-link:hover,
       .row-label:hover { color: white; text-shadow: 0 0 14px rgba(134,247,255,0.4); }
@@ -224,18 +224,6 @@
         box-shadow: 0 0 24px rgba(134,247,255,0.28);
       }
 
-      .h-line,
-      .v-line {
-        position: absolute;
-        background: var(--line);
-        pointer-events: none;
-        border-radius: 999px;
-        transition: all .25s ease;
-        filter: drop-shadow(0 0 10px rgba(125, 220, 255, 0.2));
-      }
-      .h-line { height: 2px; }
-      .v-line { width: 2px; }
-
       .statusbar { margin-top: 28px; gap: 12px; }
       .status,
       .chip { padding: 9px 12px; color: #d6e7ff; font-size: 0.9rem; }
@@ -271,6 +259,7 @@
         font-weight: 700;
         text-align: center;
         background: linear-gradient(135deg, rgba(101,217,255,0.24), rgba(185,130,255,0.24));
+        text-decoration: none;
       }
       .action.secondary {
         background: rgba(255,255,255,0.04);
@@ -295,9 +284,9 @@
             </div>
           </div>
           <div class="nav">
-            <div class="pill active">Mapa</div>
-            <div class="pill">Etapas</div>
-            <div class="pill">Palancas</div>
+            <a class="pill active" href="index.html">Mapa</a>
+            <a class="pill" href="stage.html?stage=E1">Etapa</a>
+            <a class="pill" href="lever.html?lever=P1">Palanca</a>
           </div>
         </div>
 
@@ -305,8 +294,8 @@
           <div>
             <div class="eyebrow">Sistema activo</div>
             <p>
-              El mapa entra directo al grano: al pasar por una celda sólo se destaca el nodo, y al hacer clic se fija
-              la selección para abrir detalle y navegación hacia la etapa o la palanca en una ventana dedicada.
+              El mapa entra directo al grano: al pasar por una celda sólo se destaca el nodo. Al hacer clic se fija
+              la selección y desde el panel puedes navegar a la vista de etapa o de palanca en esta misma ventana.
             </p>
           </div>
           <div class="legend">
@@ -315,7 +304,7 @@
           </div>
         </section>
 
-        <div class="map-wrap" id="mapWrap">
+        <div class="map-wrap">
           <div class="col-labels" id="colLabels">
             <div></div>
           </div>
@@ -343,20 +332,19 @@
 
         <div class="card">
           <div class="eyebrow">Lectura de la intersección</div>
-          <p id="interpretation">El nodo combina un foco claro con acceso a dos vistas monográficas.</p>
+          <p id="interpretation">El nodo combina foco claro con acceso a dos vistas monográficas.</p>
           <ul id="signals"></ul>
         </div>
 
         <div class="cta">
-          <a class="action" id="openStage" target="_blank" rel="noreferrer">Abrir etapa</a>
-          <a class="action secondary" id="openLever" target="_blank" rel="noreferrer">Abrir palanca</a>
+          <a class="action" id="openStage">Ir a etapa</a>
+          <a class="action secondary" id="openLever">Ir a palanca</a>
         </div>
       </aside>
     </div>
 
     <script>
       const grid = document.getElementById('grid');
-      const mapWrap = document.getElementById('mapWrap');
       const colLabels = document.getElementById('colLabels');
       const stageStatus = document.getElementById('stageStatus');
       const leverStatus = document.getElementById('leverStatus');
@@ -376,7 +364,7 @@
           interpretation: 'Cruce de equilibrio: el usuario puede leer el punto concreto y desde ahí saltar a una vista monográfica.'
         },
         'P1-E1': {
-          summary: 'Entrada suave al sistema: un primer punto de lectura desde el que entender el mapa y luego abrir la etapa o la palanca completa.',
+          summary: 'Entrada suave al sistema: un primer punto de lectura desde el que entender el mapa y luego navegar a la etapa o la palanca completa.',
           interpretation: 'Cruce de arranque: orienta y abre navegación hacia el contexto mayor.'
         },
         'P4-E5': {
@@ -385,35 +373,14 @@
         }
       };
 
-      const stageDescriptions = {
-        1: 'E1 abre el recorrido y presenta la lógica de las cinco palancas dentro del arranque.',
-        2: 'E2 organiza el sistema y empieza a marcar prioridades operativas.',
-        3: 'E3 concentra el foco y convierte el mapa en una lectura más nítida.',
-        4: 'E4 prepara consolidación, alineación y transferencia.',
-        5: 'E5 cierra el ciclo y deja una visión acumulada de todo el proceso.'
-      };
-
-      const leverDescriptions = {
-        1: 'P1 funciona como línea de orientación y puesta en marcha a través de las etapas.',
-        2: 'P2 actúa como palanca de foco y articulación en el recorrido completo.',
-        3: 'P3 aporta continuidad transversal y lectura comparativa entre etapas.',
-        4: 'P4 empuja síntesis, activación y cierre con criterio.',
-        5: 'P5 conecta el sistema con consolidación y madurez final.'
-      };
-
       const state = { row: 2, col: 3 };
-      let preview = null;
       const cells = [];
-      const hLines = [];
-      const vLines = [];
 
       function renderColLabels() {
         for (let c = 1; c <= 5; c++) {
           const link = document.createElement('a');
           link.className = 'axis-link';
           link.href = `stage.html?stage=E${c}`;
-          link.target = '_blank';
-          link.rel = 'noreferrer';
           link.textContent = `E${c}`;
           colLabels.appendChild(link);
         }
@@ -424,8 +391,6 @@
           const rowLink = document.createElement('a');
           rowLink.className = 'row-label';
           rowLink.href = `lever.html?lever=P${r}`;
-          rowLink.target = '_blank';
-          rowLink.rel = 'noreferrer';
           rowLink.textContent = `P${r}`;
           grid.appendChild(rowLink);
 
@@ -445,70 +410,10 @@
         }
       }
 
-      function renderLines() {
-        for (let i = 0; i < 5; i++) {
-          const h = document.createElement('div');
-          h.className = 'h-line';
-          mapWrap.appendChild(h);
-          hLines.push(h);
-
-          const v = document.createElement('div');
-          v.className = 'v-line';
-          mapWrap.appendChild(v);
-          vLines.push(v);
-        }
-      }
-
-      function placeLines() {
-        const wrap = mapWrap.getBoundingClientRect();
-        const xs = [];
-        const ys = [];
-
-        for (let c = 1; c <= 5; c++) {
-          const cell = cells.find(el => +el.dataset.row === 1 && +el.dataset.col === c).getBoundingClientRect();
-          xs.push(cell.left - wrap.left + cell.width / 2);
-        }
-        for (let r = 1; r <= 5; r++) {
-          const cell = cells.find(el => +el.dataset.row === r && +el.dataset.col === 1).getBoundingClientRect();
-          ys.push(cell.top - wrap.top + cell.height / 2);
-        }
-
-        hLines.forEach((line, idx) => {
-          line.style.left = `${xs[0]}px`;
-          line.style.top = `${ys[idx]}px`;
-          line.style.width = `${xs[4] - xs[0]}px`;
-        });
-        vLines.forEach((line, idx) => {
-          line.style.left = `${xs[idx]}px`;
-          line.style.top = `${ys[0]}px`;
-          line.style.height = `${ys[4] - ys[0]}px`;
-        });
-      }
-
-      function updateLines(activeRow, activeCol) {
-        hLines.forEach((line, idx) => {
-          const on = idx + 1 === activeRow;
-          line.style.background = on
-            ? 'linear-gradient(90deg, rgba(101,217,255,0.22), rgba(134,247,255,0.78), rgba(185,130,255,0.18))'
-            : 'rgba(125, 220, 255, 0.16)';
-          line.style.height = on ? '4px' : '2px';
-          line.style.opacity = on ? '1' : '.45';
-        });
-
-        vLines.forEach((line, idx) => {
-          const on = idx + 1 === activeCol;
-          line.style.background = on
-            ? 'linear-gradient(180deg, rgba(185,130,255,0.18), rgba(134,247,255,0.78), rgba(101,217,255,0.22))'
-            : 'rgba(125, 220, 255, 0.16)';
-          line.style.width = on ? '4px' : '2px';
-          line.style.opacity = on ? '1' : '.45';
-        });
-      }
-
       function signalList(row, col) {
         return [
-          `Desde aquí puedes abrir la vista completa de E${col} en una ventana nueva.`,
-          `También puedes abrir la vista completa de P${row} en una ventana nueva.`,
+          `Desde aquí puedes ir a la vista completa de E${col} sin salir de la misma ventana.`,
+          `También puedes ir a la vista completa de P${row} y volver luego al mapa desde el menú.`,
           `La intersección E${col} × P${row} sigue siendo el punto de entrada al detalle puntual.`
         ];
       }
@@ -530,9 +435,7 @@
         interpretation.textContent = data.interpretation;
         signals.innerHTML = signalList(row, col).map(item => `<li>${item}</li>`).join('');
         openStage.href = `stage.html?stage=E${col}`;
-        openStage.title = stageDescriptions[col];
         openLever.href = `lever.html?lever=P${row}`;
-        openLever.title = leverDescriptions[row];
       }
 
       function selectCell(row, col) {
@@ -543,13 +446,10 @@
           cell.classList.toggle('active', isActive);
           cell.classList.remove('preview');
         });
-        preview = null;
-        updateLines(row, col);
         updatePanel(row, col);
       }
 
       function previewCell(row, col) {
-        preview = { row, col };
         cells.forEach(cell => {
           const isPreview = +cell.dataset.row === row && +cell.dataset.col === col;
           const isActive = +cell.dataset.row === state.row && +cell.dataset.col === state.col;
@@ -558,16 +458,12 @@
       }
 
       function clearPreview() {
-        preview = null;
         cells.forEach(cell => cell.classList.remove('preview'));
       }
 
-      window.addEventListener('resize', placeLines);
       window.addEventListener('load', () => {
         renderColLabels();
         renderGrid();
-        renderLines();
-        placeLines();
         selectCell(state.row, state.col);
       });
     </script>

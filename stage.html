@@ -22,12 +22,31 @@
         min-height: 100vh;
       }
       .page { max-width: 1180px; margin: 0 auto; padding: 32px; }
-      .hero, .card {
+      .topnav, .hero, .card {
         background: var(--panel);
         border: 1px solid rgba(149, 206, 255, 0.14);
         border-radius: 28px;
         backdrop-filter: blur(18px);
         box-shadow: 0 20px 80px rgba(0, 0, 0, 0.35);
+      }
+      .topnav {
+        padding: 14px 18px;
+        display: flex;
+        gap: 10px;
+        flex-wrap: wrap;
+        margin-bottom: 20px;
+      }
+      .navlink {
+        color: var(--muted);
+        text-decoration: none;
+        padding: 10px 14px;
+        border-radius: 999px;
+        border: 1px solid rgba(149,206,255,.12);
+        background: rgba(255,255,255,.03);
+      }
+      .navlink.active {
+        color: var(--text);
+        background: linear-gradient(135deg, rgba(101,217,255,.15), rgba(185,130,255,.15));
       }
       .hero { padding: 32px; }
       .eyebrow { text-transform: uppercase; letter-spacing: .18em; color: #8fb4db; font-size: .75rem; }
@@ -43,12 +62,17 @@
   </head>
   <body>
     <div class="page">
+      <nav class="topnav">
+        <a class="navlink" href="index.html">Mapa</a>
+        <a class="navlink active" id="selfLink" href="stage.html?stage=E1">Etapa</a>
+        <a class="navlink" id="leverLink" href="lever.html?lever=P1">Palanca</a>
+      </nav>
       <section class="hero">
         <div class="eyebrow">Vista dedicada</div>
         <h1 id="title">Etapa E1</h1>
         <p id="summary"></p>
         <div class="meta">
-          <div class="chip">Nueva ventana</div>
+          <div class="chip">Misma ventana</div>
           <div class="chip">Lectura completa de etapa</div>
           <div class="chip" id="chip"></div>
         </div>
@@ -69,6 +93,8 @@
       document.getElementById('title').textContent = `Etapa ${stage}`;
       document.getElementById('summary').textContent = texts[num];
       document.getElementById('chip').textContent = `${stage} de 5`;
+      document.getElementById('selfLink').href = `stage.html?stage=${stage}`;
+      document.getElementById('leverLink').href = `lever.html?lever=P${num}`;
       const rail = document.getElementById('rail');
       for (let p = 1; p <= 5; p++) {
         const card = document.createElement('article');
