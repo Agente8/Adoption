@@ -254,8 +254,8 @@
           </div>
           <div class="nav">
             <a class="pill active" href="index.html">Mapa</a>
-            <a class="pill" href="stage.html?stage=E1">Etapa</a>
-            <a class="pill" href="lever.html?lever=P1">Palanca</a>
+            <a class="pill" href="stage.html?stage=1">Etapas</a>
+            <a class="pill" href="lever.html?lever=1">Palancas</a>
             <a class="pill" href="help.html">Ayuda</a>
           </div>
         </div>
@@ -282,20 +282,20 @@
 
         <div class="statusbar">
           <div class="status">Modo: <strong>Mapa</strong></div>
-          <div class="status">Etapa activa: <strong id="stageStatus">E3</strong></div>
-          <div class="status">Palanca activa: <strong id="leverStatus">P2</strong></div>
-          <div class="status">Intersección: <strong id="nodeStatus">E3 × P2</strong></div>
+          <div class="status">Etapa activa: <strong id="stageStatus">Capacitar</strong></div>
+          <div class="status">Palanca activa: <strong id="leverStatus">Capacitación</strong></div>
+          <div class="status">Intersección: <strong id="nodeStatus">Capacitar × Capacitación</strong></div>
         </div>
       </main>
 
       <aside class="side">
         <div class="eyebrow">Nodo activo</div>
-        <h2 id="title">E3 × P2</h2>
+        <h2 id="title">Capacitar × Capacitación</h2>
         <p id="summary">Lectura puntual del cruce seleccionado dentro del sistema.</p>
 
         <div class="chiprow">
-          <div class="chip" id="chipStage">Etapa E3</div>
-          <div class="chip" id="chipLever">Palanca P2</div>
+          <div class="chip" id="chipStage">Etapa Capacitar</div>
+          <div class="chip" id="chipLever">Palanca Capacitación</div>
           <div class="chip">Mindset IA</div>
         </div>
 
@@ -327,17 +327,33 @@
       const openStage = document.getElementById('openStage');
       const openLever = document.getElementById('openLever');
 
+      const stages = [
+        { code: 'E1', name: 'Alinear' },
+        { code: 'E2', name: 'Explorar' },
+        { code: 'E3', name: 'Capacitar' },
+        { code: 'E4', name: 'Expandir' },
+        { code: 'E5', name: 'Evolucionar' }
+      ];
+
+      const levers = [
+        { code: 'P1', name: 'Comunicación' },
+        { code: 'P2', name: 'Capacitación' },
+        { code: 'P3', name: 'Soporte' },
+        { code: 'P4', name: 'Gobernanza' },
+        { code: 'P5', name: 'Incentivos' }
+      ];
+
       const copy = {
-        'P2-E3': {
-          summary: 'Aquí la palanca P2 gana nitidez dentro de E3. Se reduce el ruido visual y se prioriza el foco en el nodo seleccionado.',
+        '2-3': {
+          summary: 'Aquí la palanca Capacitación gana nitidez dentro de la etapa Capacitar. Se reduce el ruido visual y se prioriza el foco en el nodo seleccionado.',
           interpretation: 'Cruce de equilibrio: el usuario puede leer el punto concreto y desde ahí saltar a una vista monográfica.'
         },
-        'P1-E1': {
-          summary: 'Entrada suave al sistema: un primer punto de lectura desde el que entender el mapa y luego navegar a la etapa o la palanca completa.',
+        '1-1': {
+          summary: 'Entrada suave al sistema: un primer punto de lectura desde el que entender el mapa y luego navegar a la etapa Alinear o a la palanca Comunicación.',
           interpretation: 'Cruce de arranque: orienta y abre navegación hacia el contexto mayor.'
         },
-        'P4-E5': {
-          summary: 'Zona de cierre: el sistema transmite consolidación y permite revisar la etapa o la palanca ya como recorridos completos.',
+        '4-5': {
+          summary: 'Zona de cierre: el sistema transmite consolidación y permite revisar la etapa Evolucionar o la palanca Gobernanza ya como recorridos completos.',
           interpretation: 'Cruce de síntesis: menos exploración libre y más lectura estructurada.'
         }
       };
@@ -349,8 +365,8 @@
         for (let c = 1; c <= 5; c++) {
           const link = document.createElement('a');
           link.className = 'axis-link';
-          link.href = `stage.html?stage=E${c}`;
-          link.textContent = `E${c}`;
+          link.href = `stage.html?stage=${c}`;
+          link.textContent = stages[c - 1].name;
           colLabels.appendChild(link);
         }
       }
@@ -359,8 +375,8 @@
         for (let r = 1; r <= 5; r++) {
           const rowLink = document.createElement('a');
           rowLink.className = 'row-label';
-          rowLink.href = `lever.html?lever=P${r}`;
-          rowLink.textContent = `P${r}`;
+          rowLink.href = `lever.html?lever=${r}`;
+          rowLink.textContent = levers[r - 1].name;
           grid.appendChild(rowLink);
 
           for (let c = 1; c <= 5; c++) {
@@ -369,7 +385,7 @@
             cell.className = 'cell';
             cell.dataset.row = r;
             cell.dataset.col = c;
-            cell.innerHTML = `<span class="mini">E${c} × P${r}</span>`;
+            cell.innerHTML = `<span class="mini">${stages[c - 1].code} × ${levers[r - 1].code}</span>`;
             cell.addEventListener('mouseenter', () => previewCell(r, c));
             cell.addEventListener('mouseleave', clearPreview);
             cell.addEventListener('click', () => selectCell(r, c));
@@ -381,29 +397,29 @@
 
       function signalList(row, col) {
         return [
-          `Desde aquí puedes ir a la vista completa de E${col} sin salir de la misma ventana.`,
-          `También puedes ir a la vista completa de P${row} y volver luego al mapa desde el menú.`,
+          `Desde aquí puedes ir a la vista completa de ${stages[col - 1].name} sin salir de la misma ventana.`,
+          `También puedes ir a la vista completa de ${levers[row - 1].name} y volver luego al mapa desde el menú.`,
           `En Ayuda encontrarás la narrativa de arquitecto vs. jardinero para entender el cambio de mindset.`
         ];
       }
 
       function updatePanel(row, col) {
-        const key = `P${row}-E${col}`;
+        const key = `${row}-${col}`;
         const data = copy[key] || {
           summary: `Prueba visual para ${key}. Este cruce queda definido como punto puntual de lectura dentro del mapa interactivo.`,
           interpretation: `Intersección ${key}: detalle local con salida directa a etapa y palanca en vistas independientes.`
         };
-        stageStatus.textContent = `E${col}`;
-        leverStatus.textContent = `P${row}`;
-        nodeStatus.textContent = `E${col} × P${row}`;
-        title.textContent = `E${col} × P${row}`;
+        stageStatus.textContent = stages[col - 1].name;
+        leverStatus.textContent = levers[row - 1].name;
+        nodeStatus.textContent = `${stages[col - 1].name} × ${levers[row - 1].name}`;
+        title.textContent = `${stages[col - 1].name} × ${levers[row - 1].name}`;
         summary.textContent = data.summary;
-        chipStage.textContent = `Etapa E${col}`;
-        chipLever.textContent = `Palanca P${row}`;
+        chipStage.textContent = `Etapa ${stages[col - 1].name}`;
+        chipLever.textContent = `Palanca ${levers[row - 1].name}`;
         interpretation.textContent = data.interpretation;
         signals.innerHTML = signalList(row, col).map(item => `<li>${item}</li>`).join('');
-        openStage.href = `stage.html?stage=E${col}`;
-        openLever.href = `lever.html?lever=P${row}`;
+        openStage.href = `stage.html?stage=${col}`;
+        openLever.href = `lever.html?lever=${row}`;
       }
 
       function selectCell(row, col) {
