@@ -1,0 +1,441 @@
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Adopción del Mindset IA</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Space+Grotesk:wght@500;700&display=swap" rel="stylesheet">
+    <style>
+      :root {
+        --bg: #07111f;
+        --panel: rgba(12, 24, 42, 0.72);
+        --text: #e8f3ff;
+        --muted: #8ea6c9;
+        --active: #86f7ff;
+        --cell: 96px;
+        --gap: 26px;
+      }
+      * { box-sizing: border-box; }
+      body {
+        margin: 0;
+        min-height: 100vh;
+        font-family: Inter, system-ui, sans-serif;
+        color: var(--text);
+        background:
+          radial-gradient(circle at 20% 20%, rgba(101, 217, 255, 0.13), transparent 28%),
+          radial-gradient(circle at 80% 10%, rgba(185, 130, 255, 0.14), transparent 26%),
+          radial-gradient(circle at 50% 80%, rgba(140, 255, 183, 0.08), transparent 24%),
+          linear-gradient(135deg, var(--bg), #040915 55%, #071423);
+        overflow: hidden;
+      }
+      body::before {
+        content: "";
+        position: fixed;
+        inset: 0;
+        background-image:
+          linear-gradient(rgba(150, 194, 255, 0.03) 1px, transparent 1px),
+          linear-gradient(90deg, rgba(150, 194, 255, 0.03) 1px, transparent 1px);
+        background-size: 40px 40px;
+        pointer-events: none;
+        mask-image: radial-gradient(circle at center, black 45%, transparent 95%);
+      }
+      .app {
+        min-height: 100vh;
+        padding: 28px;
+        display: grid;
+        grid-template-columns: 1fr 360px;
+        gap: 28px;
+      }
+      .main, .side {
+        background: var(--panel);
+        border: 1px solid rgba(149, 206, 255, 0.15);
+        box-shadow: 0 20px 80px rgba(0, 0, 0, 0.35), inset 0 1px 0 rgba(255,255,255,0.04);
+        backdrop-filter: blur(18px);
+        border-radius: 28px;
+      }
+      .main { padding: 28px 32px 30px; }
+      .side { padding: 24px; }
+      .topbar, .intro {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 20px;
+      }
+      .topbar { margin-bottom: 28px; }
+      .intro { align-items: end; margin-bottom: 30px; }
+      .brand { display: flex; align-items: center; gap: 14px; }
+      .brand-mark {
+        width: 42px; height: 42px; border-radius: 14px;
+        background: linear-gradient(135deg, rgba(101,217,255,0.4), rgba(185,130,255,0.5));
+        box-shadow: 0 0 28px rgba(101,217,255,0.35);
+        display: grid; place-items: center; font-weight: 700;
+      }
+      h1 { margin: 0; font: 700 1.8rem/1 Space Grotesk, sans-serif; letter-spacing: -0.03em; }
+      .sub { color: var(--muted); margin-top: 6px; font-size: 0.98rem; max-width: 720px; }
+      .eyebrow {
+        text-transform: uppercase;
+        letter-spacing: 0.18em;
+        color: #8fb4db;
+        font-size: 0.75rem;
+        margin-bottom: 10px;
+      }
+      .intro p, .side p { color: #bdd0ea; line-height: 1.6; }
+      .intro p { max-width: 760px; margin: 10px 0 0; }
+      .nav, .legend, .chiprow, .statusbar { display: flex; gap: 10px; flex-wrap: wrap; }
+      .legend { justify-content: end; gap: 14px; }
+      .legend span { display: inline-flex; align-items: center; gap: 8px; color: var(--muted); font-size: 0.9rem; }
+      .dot { width: 10px; height: 10px; border-radius: 50%; box-shadow: 0 0 14px currentColor; }
+      .pill, .status, .chip {
+        border-radius: 999px;
+        border: 1px solid rgba(149, 206, 255, 0.14);
+        background: rgba(255,255,255,0.03);
+      }
+      .pill {
+        padding: 11px 15px;
+        color: var(--muted);
+        font-weight: 600;
+        text-decoration: none;
+      }
+      .pill.active {
+        color: var(--text);
+        background: linear-gradient(135deg, rgba(101,217,255,0.15), rgba(185,130,255,0.15));
+        box-shadow: inset 0 0 0 1px rgba(125,220,255,0.25), 0 0 18px rgba(125,220,255,0.1);
+      }
+      .map-wrap { margin-top: 18px; padding: 24px 18px 12px 18px; }
+      .col-labels {
+        display: grid;
+        grid-template-columns: 82px repeat(5, var(--cell));
+        gap: var(--gap);
+        margin-left: 10px;
+        margin-bottom: 10px;
+        color: #cce0ff;
+        text-transform: uppercase;
+        letter-spacing: 0.16em;
+        font-size: 0.82rem;
+      }
+      .axis-link, .row-label {
+        appearance: none;
+        background: none;
+        border: 0;
+        padding: 0;
+        text-align: left;
+        color: #cce0ff;
+        text-transform: uppercase;
+        letter-spacing: 0.16em;
+        font-size: 0.82rem;
+        cursor: pointer;
+        text-decoration: none;
+      }
+      .axis-link:hover, .row-label:hover { color: white; text-shadow: 0 0 14px rgba(134,247,255,0.4); }
+      .grid {
+        display: grid;
+        grid-template-columns: 82px repeat(5, var(--cell));
+        grid-template-rows: repeat(5, var(--cell));
+        gap: var(--gap);
+        align-items: center;
+      }
+      .cell {
+        position: relative;
+        width: var(--cell);
+        height: var(--cell);
+        border-radius: 28px;
+        border: 1px solid rgba(149, 206, 255, 0.1);
+        background: radial-gradient(circle at 30% 30%, rgba(255,255,255,0.12), rgba(255,255,255,0.02) 42%, rgba(4,10,20,0.45));
+        box-shadow: inset 0 1px 0 rgba(255,255,255,0.06);
+        cursor: pointer;
+        transition: transform .2s ease, border-color .2s ease, box-shadow .2s ease, background .2s ease;
+      }
+      .cell::before, .cell::after {
+        content: "";
+        position: absolute;
+        inset: 50%;
+        translate: -50% -50%;
+        border-radius: 50%;
+        pointer-events: none;
+      }
+      .cell::before {
+        width: 14px;
+        height: 14px;
+        background: rgba(210, 234, 255, 0.9);
+        box-shadow: 0 0 22px rgba(160,230,255,0.45);
+      }
+      .cell::after {
+        width: 42px;
+        height: 42px;
+        border: 1px solid rgba(180, 220, 255, 0.12);
+      }
+      .cell .mini {
+        position: absolute;
+        left: 12px;
+        top: 11px;
+        font-size: 0.74rem;
+        color: #b6c9e6;
+        letter-spacing: 0.08em;
+      }
+      .cell:hover, .cell.preview {
+        transform: translateY(-2px) scale(1.02);
+        border-color: rgba(134, 247, 255, 0.5);
+        box-shadow: 0 0 24px rgba(134,247,255,0.16), inset 0 0 14px rgba(134,247,255,0.08);
+      }
+      .cell.active {
+        border-color: rgba(134, 247, 255, 0.85);
+        background: radial-gradient(circle at center, rgba(134,247,255,0.22), rgba(185,130,255,0.12) 35%, rgba(7,17,31,0.2));
+        box-shadow: 0 0 30px rgba(134,247,255,0.25), inset 0 0 24px rgba(134,247,255,0.15);
+      }
+      .cell.active::before {
+        width: 18px;
+        height: 18px;
+        background: white;
+        box-shadow: 0 0 36px rgba(134,247,255,0.9), 0 0 80px rgba(185,130,255,0.4);
+      }
+      .cell.active::after {
+        width: 58px;
+        height: 58px;
+        border-color: rgba(134,247,255,0.6);
+        box-shadow: 0 0 24px rgba(134,247,255,0.28);
+      }
+      .statusbar { margin-top: 28px; gap: 12px; }
+      .status, .chip { padding: 9px 12px; color: #d6e7ff; font-size: 0.9rem; }
+      .status strong { color: var(--text); }
+      .side h2 {
+        margin: 0 0 8px;
+        font: 700 1.7rem/1.05 Space Grotesk, sans-serif;
+        letter-spacing: -0.03em;
+      }
+      .card {
+        margin-top: 18px;
+        border: 1px solid rgba(149, 206, 255, 0.1);
+        border-radius: 22px;
+        padding: 16px;
+        background: rgba(255,255,255,0.03);
+      }
+      ul { margin: 12px 0 0; padding-left: 18px; color: #cfe1fb; }
+      li + li { margin-top: 8px; }
+      .cta {
+        margin-top: 18px;
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 10px;
+      }
+      .action {
+        appearance: none;
+        border: 1px solid rgba(125,220,255,0.26);
+        cursor: pointer;
+        padding: 13px 14px;
+        border-radius: 16px;
+        color: white;
+        font-weight: 700;
+        text-align: center;
+        background: linear-gradient(135deg, rgba(101,217,255,0.24), rgba(185,130,255,0.24));
+        text-decoration: none;
+      }
+      .action.secondary {
+        background: rgba(255,255,255,0.04);
+        color: #d7e8ff;
+      }
+      @media (max-width: 1100px) {
+        body { overflow: auto; }
+        .app { grid-template-columns: 1fr; }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="app">
+      <main class="main">
+        <div class="topbar">
+          <div class="brand">
+            <div class="brand-mark">◎</div>
+            <div>
+              <h1>Adopción del Mindset IA</h1>
+              <div class="sub">La estrella Polar es convertirse en una organización que piensa y opera de forma nativa con la IA.</div>
+            </div>
+          </div>
+          <div class="nav">
+            <a class="pill active" href="index.html">Mapa</a>
+            <a class="pill" href="stage.html?stage=1">Etapas</a>
+            <a class="pill" href="lever.html?lever=1">Palancas</a>
+            <a class="pill" href="help.html">Ayuda</a>
+          </div>
+        </div>
+
+
+        <div class="map-wrap">
+          <div class="col-labels" id="colLabels"><div></div></div>
+          <div class="grid" id="grid"></div>
+        </div>
+
+        <div class="statusbar">
+          <div class="status">Modo: <strong>Mapa</strong></div>
+          <div class="status">Etapa activa: <strong id="stageStatus">Capacitar</strong></div>
+          <div class="status">Palanca activa: <strong id="leverStatus">Formación</strong></div>
+          <div class="status">Intersección: <strong id="nodeStatus">Capacitar × Formación</strong></div>
+        </div>
+      </main>
+
+      <aside class="side">
+        <div class="eyebrow">Nodo activo</div>
+        <h2 id="title">Capacitar × Formación</h2>
+        <p id="summary">Lectura puntual del cruce seleccionado dentro del sistema.</p>
+
+        <div class="chiprow">
+          <div class="chip" id="chipStage">Etapa Capacitar</div>
+          <div class="chip" id="chipLever">Palanca Formación</div>
+          <div class="chip">Mindset IA</div>
+        </div>
+
+        <div class="card">
+          <div class="eyebrow">Lectura de la intersección</div>
+          <p id="interpretation">El nodo combina foco claro con acceso a dos vistas monográficas.</p>
+          <ul id="signals"></ul>
+        </div>
+
+        <div class="cta">
+          <a class="action" id="openStage">Ir a etapa</a>
+          <a class="action secondary" id="openLever">Ir a palanca</a>
+        </div>
+      </aside>
+    </div>
+
+    <script>
+      const grid = document.getElementById('grid');
+      const colLabels = document.getElementById('colLabels');
+      const stageStatus = document.getElementById('stageStatus');
+      const leverStatus = document.getElementById('leverStatus');
+      const nodeStatus = document.getElementById('nodeStatus');
+      const title = document.getElementById('title');
+      const summary = document.getElementById('summary');
+      const chipStage = document.getElementById('chipStage');
+      const chipLever = document.getElementById('chipLever');
+      const interpretation = document.getElementById('interpretation');
+      const signals = document.getElementById('signals');
+      const openStage = document.getElementById('openStage');
+      const openLever = document.getElementById('openLever');
+
+      const stages = [
+        { code: 'E1', name: 'Alinear' },
+        { code: 'E2', name: 'Explorar' },
+        { code: 'E3', name: 'Capacitar' },
+        { code: 'E4', name: 'Expandir' },
+        { code: 'E5', name: 'Evolucionar' }
+      ];
+
+      const levers = [
+        { code: 'P1', name: 'Comunicación' },
+        { code: 'P2', name: 'Formación' },
+        { code: 'P3', name: 'Soporte' },
+        { code: 'P4', name: 'Gobernanza' },
+        { code: 'P5', name: 'Incentivos' }
+      ];
+
+      const copy = {
+        '2-3': {
+          summary: 'Aquí la palanca Formación gana nitidez dentro de la etapa Capacitar. Se reduce el ruido visual y se prioriza el foco en el nodo seleccionado.',
+          interpretation: 'Cruce de equilibrio: el usuario puede leer el punto concreto y desde ahí saltar a una vista monográfica.'
+        },
+        '1-1': {
+          summary: 'Entrada suave al sistema: un primer punto de lectura desde el que entender el mapa y luego navegar a la etapa Alinear o a la palanca Comunicación.',
+          interpretation: 'Cruce de arranque: orienta y abre navegación hacia el contexto mayor.'
+        },
+        '4-5': {
+          summary: 'Zona de cierre: el sistema transmite consolidación y permite revisar la etapa Evolucionar o la palanca Gobernanza ya como recorridos completos.',
+          interpretation: 'Cruce de síntesis: menos exploración libre y más lectura estructurada.'
+        }
+      };
+
+      const state = { row: 2, col: 3 };
+      const cells = [];
+
+      function renderColLabels() {
+        for (let c = 1; c <= 5; c++) {
+          const link = document.createElement('a');
+          link.className = 'axis-link';
+          link.href = `stage.html?stage=${c}`;
+          link.textContent = stages[c - 1].name;
+          colLabels.appendChild(link);
+        }
+      }
+
+      function renderGrid() {
+        for (let r = 1; r <= 5; r++) {
+          const rowLink = document.createElement('a');
+          rowLink.className = 'row-label';
+          rowLink.href = `lever.html?lever=${r}`;
+          rowLink.textContent = levers[r - 1].name;
+          grid.appendChild(rowLink);
+
+          for (let c = 1; c <= 5; c++) {
+            const cell = document.createElement('button');
+            cell.type = 'button';
+            cell.className = 'cell';
+            cell.dataset.row = r;
+            cell.dataset.col = c;
+            cell.innerHTML = `<span class="mini">${stages[c - 1].code} × ${levers[r - 1].code}</span>`;
+            cell.addEventListener('mouseenter', () => previewCell(r, c));
+            cell.addEventListener('mouseleave', clearPreview);
+            cell.addEventListener('click', () => selectCell(r, c));
+            grid.appendChild(cell);
+            cells.push(cell);
+          }
+        }
+      }
+
+      function signalList(row, col) {
+        return [
+          `Desde aquí puedes ir a la vista completa de ${stages[col - 1].name} sin salir de la misma ventana.`,
+          `También puedes ir a la vista completa de ${levers[row - 1].name} y volver luego al mapa desde el menú.`,
+          `En Ayuda encontrarás la narrativa de arquitecto vs. jardinero para entender el cambio de mindset.`
+        ];
+      }
+
+      function updatePanel(row, col) {
+        const key = `${row}-${col}`;
+        const data = copy[key] || {
+          summary: `Prueba visual para ${key}. Este cruce queda definido como punto puntual de lectura dentro del mapa interactivo.`,
+          interpretation: `Intersección ${key}: detalle local con salida directa a etapa y palanca en vistas independientes.`
+        };
+        stageStatus.textContent = stages[col - 1].name;
+        leverStatus.textContent = levers[row - 1].name;
+        nodeStatus.textContent = `${stages[col - 1].name} × ${levers[row - 1].name}`;
+        title.textContent = `${stages[col - 1].name} × ${levers[row - 1].name}`;
+        summary.textContent = data.summary;
+        chipStage.textContent = `Etapa ${stages[col - 1].name}`;
+        chipLever.textContent = `Palanca ${levers[row - 1].name}`;
+        interpretation.textContent = data.interpretation;
+        signals.innerHTML = signalList(row, col).map(item => `<li>${item}</li>`).join('');
+        openStage.href = `stage.html?stage=${col}`;
+        openLever.href = `lever.html?lever=${row}`;
+      }
+
+      function selectCell(row, col) {
+        state.row = row;
+        state.col = col;
+        cells.forEach(cell => {
+          const isActive = +cell.dataset.row === row && +cell.dataset.col === col;
+          cell.classList.toggle('active', isActive);
+          cell.classList.remove('preview');
+        });
+        updatePanel(row, col);
+      }
+
+      function previewCell(row, col) {
+        cells.forEach(cell => {
+          const isPreview = +cell.dataset.row === row && +cell.dataset.col === col;
+          const isActive = +cell.dataset.row === state.row && +cell.dataset.col === state.col;
+          cell.classList.toggle('preview', isPreview && !isActive);
+        });
+      }
+
+      function clearPreview() {
+        cells.forEach(cell => cell.classList.remove('preview'));
+      }
+
+      window.addEventListener('load', () => {
+        renderColLabels();
+        renderGrid();
+        selectCell(state.row, state.col);
+      });
+    </script>
+  </body>
+</html>
