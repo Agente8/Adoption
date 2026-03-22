@@ -1,0 +1,81 @@
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Vista de etapa</title>
+    <style>
+      :root {
+        --bg: #07111f;
+        --panel: rgba(12, 24, 42, 0.82);
+        --text: #e8f3ff;
+        --muted: #9ab2d1;
+      }
+      * { box-sizing: border-box; }
+      body {
+        margin: 0;
+        font-family: Inter, system-ui, sans-serif;
+        color: var(--text);
+        background:
+          radial-gradient(circle at top left, rgba(101,217,255,.12), transparent 28%),
+          linear-gradient(135deg, #07111f, #0a1627 55%, #071423);
+        min-height: 100vh;
+      }
+      .page { max-width: 1180px; margin: 0 auto; padding: 32px; }
+      .hero, .card {
+        background: var(--panel);
+        border: 1px solid rgba(149, 206, 255, 0.14);
+        border-radius: 28px;
+        backdrop-filter: blur(18px);
+        box-shadow: 0 20px 80px rgba(0, 0, 0, 0.35);
+      }
+      .hero { padding: 32px; }
+      .eyebrow { text-transform: uppercase; letter-spacing: .18em; color: #8fb4db; font-size: .75rem; }
+      h1 { margin: 10px 0 8px; font-size: 3rem; }
+      p { color: var(--muted); line-height: 1.6; }
+      .rail { display: grid; grid-template-columns: repeat(5, 1fr); gap: 16px; margin-top: 28px; }
+      .card { padding: 20px; }
+      .card strong { display: block; font-size: 1.05rem; margin-bottom: 8px; }
+      .meta { margin-top: 28px; display: flex; gap: 10px; flex-wrap: wrap; }
+      .chip { padding: 10px 12px; border-radius: 999px; background: rgba(255,255,255,.04); border: 1px solid rgba(149,206,255,.12); }
+      @media (max-width: 900px) { .rail { grid-template-columns: 1fr; } h1 { font-size: 2.2rem; } }
+    </style>
+  </head>
+  <body>
+    <div class="page">
+      <section class="hero">
+        <div class="eyebrow">Vista dedicada</div>
+        <h1 id="title">Etapa E1</h1>
+        <p id="summary"></p>
+        <div class="meta">
+          <div class="chip">Nueva ventana</div>
+          <div class="chip">Lectura completa de etapa</div>
+          <div class="chip" id="chip"></div>
+        </div>
+      </section>
+      <section class="rail" id="rail"></section>
+    </div>
+    <script>
+      const params = new URLSearchParams(window.location.search);
+      const stage = params.get('stage') || 'E1';
+      const num = Number(stage.replace('E', '')) || 1;
+      const texts = {
+        1: 'E1 abre el proceso. Aquí las cinco palancas se leen como activadores iniciales y marcos de entrada.',
+        2: 'E2 ordena el sistema. La etapa concentra organización, foco y primeras decisiones de despliegue.',
+        3: 'E3 es el núcleo del recorrido. Las cinco palancas se tensan aquí con más claridad y contraste.',
+        4: 'E4 prepara consolidación. La etapa traduce las palancas en alineación, transferencia y ajuste.',
+        5: 'E5 cierra el ciclo. Cada palanca se revisa desde síntesis, madurez y proyección final.'
+      };
+      document.getElementById('title').textContent = `Etapa ${stage}`;
+      document.getElementById('summary').textContent = texts[num];
+      document.getElementById('chip').textContent = `${stage} de 5`;
+      const rail = document.getElementById('rail');
+      for (let p = 1; p <= 5; p++) {
+        const card = document.createElement('article');
+        card.className = 'card';
+        card.innerHTML = `<strong>P${p} en ${stage}</strong><p>Esta tarjeta representa cómo la palanca P${p} se expresa dentro de ${stage}. Aquí luego irá contenido real del cruce.</p>`;
+        rail.appendChild(card);
+      }
+    </script>
+  </body>
+</html>
