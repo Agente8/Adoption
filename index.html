@@ -388,7 +388,8 @@
             cell.className = 'cell';
             cell.dataset.row = r;
             cell.dataset.col = c;
-            cell.innerHTML = `<span class="mini">${stages[c - 1].code} × ${levers[r - 1].code}</span>`;
+            cell.innerHTML = "";
+            cell.setAttribute("aria-label", `${stages[c - 1].name} × ${levers[r - 1].name}`);
             cell.addEventListener('mouseenter', () => previewCell(r, c));
             cell.addEventListener('mouseleave', clearPreview);
             cell.addEventListener('click', () => selectCell(r, c));
