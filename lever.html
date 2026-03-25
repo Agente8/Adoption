@@ -33,13 +33,13 @@
     <div class="page">
       <nav class="topnav">
         <a class="navlink" href="index.html">Mapa</a>
-        <a class="navlink" id="stageLink" href="stage.html?stage=1">Etapas</a>
-        <a class="navlink active" id="selfLink" href="lever.html?lever=1">Palancas</a>
+        <a class="navlink" id="stageLink" href="stage.html?stage=1">Stages</a>
+        <a class="navlink active" id="selfLink" href="lever.html?lever=1">Levers</a>
         <a class="navlink" href="help.html">Ayuda</a>
       </nav>
       <section class="hero">
         <div class="eyebrow">Adopción del Mindset IA</div>
-        <h1 id="title">Comunicación</h1>
+        <h1 id="title">Communication</h1>
         <p id="summary"></p>
         <div class="meta">
           <div class="chip">Misma ventana</div>
@@ -52,16 +52,16 @@
     <script>
       const params = new URLSearchParams(window.location.search);
       const leverId = Number(params.get('lever') || '1');
-      const levers = ['Comunicación', 'Formación', 'Soporte', 'Gobernanza', 'Incentivos'];
-      const stages = ['Alinear', 'Explorar', 'Capacitar', 'Expandir', 'Evolucionar'];
+      const levers = ['Communication', 'Training', 'Support', 'Governance', 'Incentives'];
+      const stages = ['Align', 'Prove', 'Enable', 'Scale', 'Sustain'];
       const lever = levers[leverId - 1] || levers[0];
       const num = leverId;
       const texts = {
-        1: 'Comunicación introduce la lógica del sistema y se adapta a cada etapa como estructura de arranque.',
-        2: 'Formación organiza foco y claridad a través del proceso completo.',
-        3: 'Soporte conecta etapas y ayuda a comparar transiciones y continuidades.',
-        4: 'Gobernanza impulsa activación, síntesis y consolidación progresiva.',
-        5: 'Incentivos acompaña la madurez del recorrido y su lectura final.'
+        1: 'Communication introduce la lógica del sistema y se adapta a cada etapa como estructura de arranque.',
+        2: 'Training organiza foco y claridad a través del proceso completo.',
+        3: 'Support conecta etapas y ayuda a comparar transiciones y continuidades.',
+        4: 'Governance impulsa activación, síntesis y consolidación progresiva.',
+        5: 'Incentives acompaña la madurez del recorrido y su lectura final.'
       };
       document.getElementById('title').textContent = lever;
       document.getElementById('summary').textContent = texts[num];
